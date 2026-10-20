@@ -1,71 +1,90 @@
-# TALENTRA.ID — Panduan Penerapan Vercel Free-Tier
+# VELTARA.ID — Panduan Penerapan Vercel Free-Tier
 ## GitHub + Vercel Hobby + Neon PostgreSQL + Vercel Blob (Private)
 
-Dokumen ini adalah panduan otoritatif untuk menerapkan TALENTRA.ID secara mandiri ke infrastruktur gratis:
-- **Source Control**: GitHub
-- **Application Host**: Vercel (Hobby Tier — Next.js + Serverless FastAPI)
+Dokumen ini adalah panduan otoritatif untuk menerapkan **VELTARA.ID** secara mandiri ke infrastruktur cloud gratis:
+- **Source Control**: GitHub ([https://github.com/IAmYoursRey/VELTARA.git](https://github.com/IAmYoursRey/VELTARA.git))
+- **Application Host**: Vercel (Hobby Tier — Next.js 14 App Router + Serverless FastAPI)
 - **Database**: Neon Serverless PostgreSQL (Free Tier)
 - **Object Storage**: Vercel Blob (Private Storage)
 
-Tidak memerlukan server VPS, daemon Docker, MongoDB, MinIO, ataupun kartu kredit untuk pengujian awal skala sekolah/kompetisi.
+Tidak memerlukan server VPS berbayar, daemon Docker yang berat, ataupun kartu kredit untuk pengujian dan penerapan skala sekolah.
 
 ---
 
 ## 1. Arsitektur Penerapan
 
 ```text
-                    GitHub Repository
-                           │
-                           ▼
-                    Vercel Project
-        ┌──────────────────┴──────────────────┐
-        │                                     │
-        ▼                                     ▼
-     Next.js                           FastAPI Function
-  (Frontend App)                        (`api/index.py`)
-        │                                     │
-        ├──────────────────┬──────────────────┤
-        │                  │                  │
-        ▼                  ▼                  ▼
-   Vercel Blob        Neon PostgreSQL     Session & RBAC
- (Private Bukti &   (Seluruh Data Siswa,  (Server-Enforced
-     File CV)         Portofolio & CV)     di PostgreSQL)
+                    GitHub Repository (IAmYoursRey/VELTARA)
+                                   │
+                                   ▼
+                    Vercel Project (Next.js Framework)
+        ┌──────────────────────────┴──────────────────────────┐
+        │                                                     │
+        ▼                                                     ▼
+     Next.js                                           FastAPI Function
+  (Frontend PWA App)                                    (`api/index.py`)
+        │                                                     │
+        ├──────────────────────────┬──────────────────────────┤
+        │                          │                          │
+        ▼                          ▼                          ▼
+   Vercel Blob                Neon PostgreSQL            Session & RBAC
+ (Private Bukti Karya &     (Seluruh Data Siswa,        (Server-Enforced
+     Unduhan CV PDF)          Portofolio & CV)           di PostgreSQL)
 ```
 
 ---
 
-## 2. Otoritas Routing Produksi (Production Route Ownership)
+## 2. Pengaturan Filter Berkas (Apa yang Di-Upload & Tidak Di-Upload)
 
-Arsitektur Vercel membagi kepemilikan rute secara tegas untuk menghindari kolisi namespace:
+Sistem telah dikonfigurasi dengan dua lapisan pemfilteran berkas:
+
+### A. Filter Git (`.gitignore` — Berkas yang Dikecualikan dari Repositori)
+- **Secrets & Credentials**: `.env`, `.env.local`, `.env*.local`, `*.pem`, `*.key`.
+- **Database Lokal**: `*.db`, `*.sqlite`, `*.sqlite3`, `test_*.db`.
+- **Uploads & Cache Lokal**: `backend/storage_data/`, `uploads/`, `storage/`, `local_storage/`, `generated_cvs/`.
+- **Build & Artifacts**: `.next/`, `build/`, `out/`, `dist/`.
+- **Python Cache**: `.venv/`, `__pycache__/`, `*.pyc`, `.pytest_cache/`.
+
+### B. Filter Vercel (`.vercelignore` — Berkas yang Dikecualikan dari Build Deployment)
+- **AI Agent Prompts & Memory**: `.agents/`, `.ai-sync/` (hanya untuk pengembangan di IDE).
+- **Test Scripts & Local Tests**: `scripts/`, `backend/tests/`.
+- **Internal Specs**: `VELTARA/`, `AGENTS.md`, `GEMINI.md`, `MANIFEST.json`.
+- **Manfaat**: Ukuran paket Serverless Function sangat kecil (< 15 MB), deployment jauh lebih cepat, dan tidak boros kuota bandwidth Vercel.
+
+---
+
+## 3. Otoritas Routing Produksi
+
+Arsitektur Vercel membagi kepemilikan rute secara tegas:
 
 1. **`/api/*` → Otoritas Penuh FastAPI (`api/index.py`)**:
-   - Seluruh endpoint API bisnis TALENTRA berada di bawah namespace `/api/*`:
+   - Seluruh endpoint API bisnis VELTARA berada di bawah namespace `/api/*`:
      - `/api/v1/auth/*` (Login, Me, CSRF, Logout)
      - `/api/v1/student/*` (Portofolio, Rekomendasi, CV, Unduhan)
      - `/api/v1/teacher/*` (Antrean validasi, review, rubrik)
      - `/api/v1/admin/*` (Manajemen pengguna, kelas, analitik)
      - `/api/v1/public/*` (Verifikasi publik QR independen)
      - `/api/v1/health/*` (Probe live & ready)
-   - **TIDAK ADA Route Handler Next.js di bawah `/api/*`**.
+   - Konfigurasi `next.config.mjs` secara otomatis memetakan `/api/:path*` ke Serverless Function `/api/`.
 2. **`/blob/*` → Otoritas Next.js Route Handlers (Trusted Vercel Blob Broker)**:
-   - Terisolasi di luar `/api/*` agar tidak pernah diintersepsi oleh serverless Python:
-     - `/blob/upload`: Handler `@vercel/blob/client` `handleUpload` yang memverifikasi intent dengan FastAPI.
+   - Terisolasi di luar `/api/*`:
+     - `/blob/upload`: Handler `@vercel/blob/client` `handleUpload` yang memverifikasi izin unggah dengan FastAPI.
      - `/blob/sign`: Broker penandatangan URL sempit (`issueSignedToken` + `presignUrl`) yang dilindungi `BLOB_BROKER_HMAC_SECRET`.
 3. **Semua Rute Lainnya → Next.js App Router**:
-   - `/`, `/login`, `/student/*`, `/teacher/*`, `/admin/*`, `/verify/*`.
+   - `/`, `/login`, `/student/*`, `/teacher/*`, `/admin/*`, `/verify/*`, `/offline`.
 
 ---
 
-## 3. Variabel Lingkungan Vercel (Environment Variables)
+## 4. Variabel Lingkungan Vercel (Environment Variables)
 
 Konfigurasikan variabel berikut pada menu **Project Settings > Environment Variables** di Dashboard Vercel:
 
-### A. Rahasia Aplikasi (App Secrets — Enkripsi Ketat)
+### A. Rahasia Aplikasi (App Secrets)
 | Variabel | Lingkungan | Tujuan / Keterangan |
 | :--- | :--- | :--- |
 | `DATABASE_URL` | Production, Preview | Neon Pooled connection string (`postgresql+asyncpg://...pooler...`) |
 | `JWT_SECRET_KEY` | Production, Preview | Kunci rahasia minimal 32 karakter untuk enkripsi token sesi pengguna |
-| `BLOB_BROKER_HMAC_SECRET` | Production, Preview | Kunci rahasia minimal 32 karakter khusus otorisasi internal FastAPI ↔ Next.js Blob broker (terisolasi ketat dari `JWT_SECRET_KEY`) |
+| `BLOB_BROKER_HMAC_SECRET` | Production, Preview | Kunci rahasia minimal 32 karakter khusus otorisasi internal FastAPI ↔ Next.js Blob broker |
 | `IDENTIFIER_LOOKUP_PEPPER` | Production, Preview | Pepper HMAC untuk anonimisasi NISN / NIP di database |
 | `CV_VERIFICATION_TOKEN_PEPPER` | Production, Preview | Pepper rahasia untuk hash token verifikasi publik QR |
 
@@ -80,135 +99,54 @@ Konfigurasikan variabel berikut pada menu **Project Settings > Environment Varia
 | `FREE_TIER_MODE` | `true` | Production, Preview | Mengaktifkan proteksi kuota free-tier |
 | `STORAGE_SOFT_LIMIT_BYTES` | `209715200` | Production, Preview | Soft limit storage (200 MB) |
 | `CV_PDF_MAX_BYTES` | `4194304` | Production, Preview | Batas aman payload CV PDF (4 MB) |
-| `DB_POOL_CLASS` | `queue` | Production, Preview | `queue` (pool_size=2) atau `nullpool` |
+| `DB_POOL_CLASS` | `queue` | Production, Preview | `queue` (pool_size=2) untuk serverless |
 | `COOKIE_SECURE` | `true` | Production, Preview | Enforce HTTPS cookie |
 | `ENABLE_DEMO_AUTH` | `false` | Production, Preview | Wajib false di produksi |
-| `PUBLIC_APP_URL` | `https://talentra.vercel.app` | Production | URL domain produksi utama |
-| `ALLOWED_ORIGINS` | `https://talentra.vercel.app` | Production | Origin CORS yang diizinkan |
+| `PUBLIC_APP_URL` | `https://veltara.vercel.app` | Production | URL domain produksi utama Vercel Anda |
+| `ALLOWED_ORIGINS` | `https://veltara.vercel.app` | Production | Origin CORS yang diizinkan |
 
-### C. Identitas Blob Terkelola Vercel (Vercel-Managed Blob Identity)
-*Jangan menyalin atau menempel token OIDC secara manual ke pengaturan Vercel; variabel ini disuntikkan secara otomatis dan dirotasi oleh platform Vercel saat Anda menautkan Blob Store:*
+### C. Identitas Blob Terkelola Vercel (Otomatis)
+Variabel ini disuntikkan secara otomatis oleh platform Vercel saat Anda membuat Blob Store di tab Storage:
 - `VERCEL_OIDC_TOKEN` (Otomatis)
 - `BLOB_STORE_ID` (Otomatis)
 
-*Fallback Opsional (Hanya untuk pengujian offline/lokal jika OIDC tidak tersedia):*
-- `BLOB_READ_WRITE_TOKEN`: Opsional untuk pengembangan lokal.
-
 ---
 
-## 3. Prosedur Penerapan dan Migrasi Kanonikal (9 Langkah)
+## 5. Panduan Penerapan Langkah-Demi-Langkah
 
-Ikuti urutan langkah produksi berikut secara disiplin:
-
-```text
-1. Repositori GitHub sudah terhubung (https://github.com/IAmYoursRey/Talentra.git)
-2. Buat / Impor Proyek ke Vercel (Framework: Next.js)
-3. Buat Proyek Database Neon PostgreSQL Gratis (Ambil Pooled URL)
-4. Buat dan Hubungkan PRIVATE Vercel Blob Store
-5. Konfigurasikan seluruh App Secrets dan App Config di Vercel
-6. Jalankan Migrasi Alembic (`alembic upgrade head`) ke Neon DB
-7. Terapkan ke Vercel Preview Deployment
-8. Lakukan Smoke Test pada Preview Deployment
-9. Promosikan / Terapkan ke Production Deployment
-```
-
-### Langkah 1: Repositori GitHub
-Repositori TALENTRA.ID telah tersedia di branch `main` pada `https://github.com/IAmYoursRey/Talentra.git`.
-
-### Langkah 2: Impor Proyek ke Vercel
-1. Masuk ke [vercel.com](https://vercel.com).
-2. Klik **Add New... > Project** dan pilih repositori `Talentra`.
-3. Vercel akan otomatis mengenali framework **Next.js**.
-4. Biarkan konfigurasi Build & Output default.
-5. Vercel secara native akan mengeksekusi `api/index.py` untuk seluruh request `/api/*`.
-
-### Langkah 3: Buat Database Neon PostgreSQL Gratis (Pooled)
+### Langkah 1: Buat Database Neon PostgreSQL Gratis
 1. Buka [neon.tech](https://neon.tech) dan masuk dengan akun GitHub Anda.
-2. Buat proyek baru (misal: `talentra-db`).
-3. Salin string koneksi **Pooled Connection** (yang memiliki subdomain `-pooler`).
-4. Ganti awalan skema URL dari `postgres://` atau `postgresql://` menjadi `postgresql+asyncpg://`.
+2. Buat proyek baru (misal: `veltara-db`).
+3. Pada dashboard Neon, pilih opsi **Pooled Connection** (yang memiliki host dengan subdomain `-pooler`).
+4. Salin string koneksi yang diberikan (contoh: `postgresql://neondb_owner:xyz@ep-pooler.region.aws.neon.tech/neondb?sslmode=require`).
 
-### Langkah 4: Buat dan Hubungkan Private Vercel Blob Store
-1. Di Dashboard Vercel proyek Anda, buka tab **Storage**.
+### Langkah 2: Inisialisasi Skema Tabel Neon
+Anda dapat langsung membuat seluruh tabel di database Neon hanya dengan satu perintah dari terminal lokal Anda:
+```bash
+python scripts/init_neon_db.py --db-url "postgresql://neondb_owner:YOUR_PASSWORD@ep-pooler.region.aws.neon.tech/neondb?sslmode=require"
+```
+*(Gunakan flag `--seed-demo` jika ingin langsung mengisi data awal sekolah dan portofolio percontohan).*
+
+### Langkah 3: Impor Repositori ke Vercel
+1. Masuk ke [vercel.com](https://vercel.com).
+2. Klik **Add New... > Project** dan pilih repositori `IAmYoursRey/VELTARA`.
+3. Vercel akan otomatis mengenali framework **Next.js**.
+4. Biarkan konfigurasi Build & Output secara default (Next.js otomatis memaketkan Next.js dan `api/index.py`).
+
+### Langkah 4: Buat Vercel Blob Store (Private)
+1. Di halaman proyek Vercel Anda, buka tab **Storage**.
 2. Klik **Create Database > Blob**.
-3. Beri nama store (misal: `talentra-evidence`).
-4. **Wajib**: Pastikan pengaturan akses bersifat privat (`access: private`).
-5. Vercel secara otomatis menyuntikkan autentikasi OIDC ke serverless functions proyek Anda.
+3. Beri nama store (misal: `veltara-evidence`).
+4. Pastikan opsi **Private** aktif untuk keamanan data portofolio siswa.
+5. Klik **Create & Connect**. Vercel akan secara otomatis menautkan kredensial Blob ke deployment Anda.
 
-### Langkah 5: Konfigurasi Variabel Lingkungan di Vercel
-Tambahkan seluruh variabel lingkungan dari tabel Bagian 2 (App Secrets & App Config) di menu **Project Settings > Environment Variables**.
+### Langkah 5: Masukkan Environment Variables di Vercel
+1. Buka menu **Project Settings > Environment Variables** di Vercel.
+2. Tambahkan seluruh variabel dari template `.env.vercel.example`.
+3. Pastikan `DATABASE_URL` menggunakan format `postgresql+asyncpg://...` dengan parameter `?sslmode=require`.
 
-### Langkah 6: Jalankan Migrasi Alembic Secara Eksplisit
-Jangan pernah mengeksekusi mutasi skema secara otomatis saat cold start fungsi serverless. Jalankan migrasi satu kali dari terminal sebelum menerima traffic:
-```bash
-# Dari root proyek:
-cd backend
-python -m pip install -r requirements.txt
-
-# Jalankan migrasi ke Neon DB:
-DATABASE_URL="postgresql+asyncpg://neondb_owner:<password>@ep-cool-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require" alembic upgrade head
-```
-
-### Langkah 7: Terapkan ke Vercel Preview Deployment
-Buat Pull Request atau push ke branch non-main untuk memicu Preview Deployment terisolasi.
-
-### Langkah 8: Uji Asap (Smoke Test) pada Preview
-Verifikasi URL preview (`https://<preview-domain>`):
-1. Probe kesehatan:
-   - `https://<preview-domain>/api/v1/health/live` -> `{"status": "live", ...}`.
-   - `https://<preview-domain>/api/v1/health/ready` -> `{"status": "ready", ...}`.
-2. Probe verifikasi publik:
-   - `https://<preview-domain>/api/v1/public/verify/invalid-token` -> 404 tanpa kebocoran data.
-3. Halaman login: `/login`.
-
-### Langkah 9: Promosikan ke Production
-Setelah pengujian preview berhasil, merge ke `main` untuk merilis ke domain produksi utama (`https://<project>.vercel.app`).
-
----
-
-## 4. Manifest Dependensi Python (Python Dependency Manifests)
-
-TALENTRA.ID memisahkan manifest dependensi Python secara terstruktur:
-
-1. **`requirements.txt` (Root Repositori)**:
-   - **Otoritatif untuk Runtime Vercel**.
-   - Vercel Serverless Function runtime secara otomatis mendeteksi file dependensi di root repositori untuk memaketkan fungsi Python (`api/index.py`).
-   - Berisi hanya paket produksi esensial: `fastapi`, `pydantic`, `argon2-cffi`, `pyjwt[crypto]`, `sqlalchemy`, `greenlet`, `asyncpg`, `alembic`, `reportlab`, `qrcode`, `pillow`, `httpx`.
-2. **`backend/requirements.txt` (Subdirektori Backend)**:
-   - **Otoritatif untuk Pengembangan Lokal & Test Suite Lengkap**.
-   - Menyertakan perkakas pengembangan dan pengujian lokal: `uvicorn`, `aiosqlite`, `pytest`, `pytest-asyncio`.
-
----
-
-## 5. Pengembangan Lokal (Local Development)
-
-Pengembangan lokal tetap cepat dan mandiri tanpa membutuhkan koneksi internet atau cloud:
-
-```bash
-# Terminal 1: Frontend Next.js
-npm run dev
-
-# Terminal 2: Backend FastAPI (menggunakan SQLite bawaan)
-python -m uvicorn app.main:app --reload --port 8000 --app-dir backend
-```
-
-Opsi sinkronisasi variabel Vercel ke komputer lokal:
-```bash
-vercel link
-vercel env pull .env.local
-```
-
----
-
-## 5. Batasan & Realitas Free-Tier
-
-Penerapan gratis ini dirancang untuk:
-- Pilot demonstrasi sekolah.
-- Portofolio pameran kompetisi.
-- Penggunaan internal skala kecil hingga menengah.
-
-Kapasitas gratis Neon dan Vercel Blob memiliki kuota kuantitatif:
-1. **Neon Free Tier**: ~0.5 GB data relational.
-2. **Vercel Blob Free Tier**: ~1 GB penyimpanan dan batas bandwidth transfer bulanan.
-3. Fitur `FREE_TIER_MODE=true` melindungi sistem agar menolak unggahan baru dengan kode `STORAGE_QUOTA_REACHED` ketika soft-limit tercapai tanpa merusak karya portofolio yang sudah tersimpan.
-4. Jika sekolah membutuhkan skala ribuan siswa aktif dengan berkas video besar, institusi dapat meningkatkan ke paket kuota berbayar tanpa mengubah kode aplikasi.
+### Langkah 6: Deploy & Uji Aplikasi
+1. Klik **Deploy**.
+2. Setelah deployment selesai, buka domain yang diberikan Vercel (`https://veltara.vercel.app`).
+3. Uji endpoint kesehatan: `https://<domain>/api/v1/health/ready` -> status `ready`.
+4. Aplikasi VELTARA.ID Anda sekarang aktif dan berjalan di cloud gratis dengan database Neon dan storage Vercel Blob!

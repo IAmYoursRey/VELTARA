@@ -1,0 +1,46 @@
+# Vercel Deployment Ignore Rules for VELTARA.ID
+# Keeps serverless functions and build artifacts lightweight and fast
+
+# AI Agent Skills & Sync Memory (Local IDE only)
+.agents/
+.ai-sync/
+
+# Architecture & Project Internal Docs
+VELTARA/
+AGENTS.md
+GEMINI.md
+MANIFEST.json
+
+# Local Verification & Test Scripts
+scripts/
+backend/tests/
+.pytest_cache/
+.coverage/
+coverage/
+htmlcov/
+
+# Local Databases & SQLite
+*.db
+*.sqlite
+*.sqlite3
+test_*.db
+
+# Local Storage & Uploads
+backend/storage_data/
+/uploads/
+/storage/
+/local_storage/
+generated_cvs/
+
+# Development & Virtual Environments
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+
+# IDE & OS Files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

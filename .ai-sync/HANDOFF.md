@@ -1,19 +1,21 @@
 # Handoff Note
 
 - **AI Pelaksana**: `gemini-3.8-flash`
-- **Waktu Penyelesaian**: `2026-10-20 12:37 +07:00`
-- **Status Akhir**: **SELESAI SEMUA TARGET**
+- **Waktu Penyelesaian**: `2026-10-20 12:56 +07:00`
+- **Status Akhir**: **SELESAI SEMPURNA**
 - **Ringkasan Pekerjaan**:
-  1. **Rebranding Judul & Identitas**: Seluruh judul, metadata, layout, halaman, manifest, mock, auth token, dan layanan telah di-rename dari TALENTRA / VISTARA menjadi **VELTARA.ID** / **VELTARA**.
-  2. **Logo & Asset Baru**: Dibuat logo SVG baru (`icon-192.svg`, `icon-512.svg`) dengan emblem 3D faceted "V" berpalet luxury deep night violet & electric violet; logo spinner dan hero image (`public/veltara-hero.jpg`) telah terpasang rapi.
-  3. **Penyesuaian Skill & Agen**: Seluruh 9 skill domain diubah menjadi prefix `veltara-*`, agen spesialis di `.agents/agents/` diubah menjadi `veltara-*`, skill Android yang tidak relevan dibersihkan, dan rule arsitektur web fullstack baru dipasang.
-  4. **Pembersihan AI Slop & Error Fix**: Mengeliminasi komentar/format AI slop, memasang konfigurasi ESLint standar Next.js, dan memperbaiki seluruh error kompilasi dan linting.
-  5. **Verifikasi Build & Test**:
-     - `validate_kit.py`: OK (5 agents, 61 skills, 8 rules valid).
-     - `tsc --noEmit`: 0 error.
-     - `next lint`: 0 error.
-     - `next build`: 25/25 static & dynamic pages ter-generate sukses.
-     - `npm test`: 9/9 phase tests (Phase 1 s.d. Phase 9) lulus 100%.
-  6. **Konfigurasi Git & Push**:
-     - Remote origin dialihkan ke `https://github.com/IAmYoursRey/VELTARA.git`.
-     - Branch `main` berhasil di-push ke remote repository GitHub.
+  1. **Konfigurasi Vercel Free-Tier**: 
+     - Dibuat `.vercelignore` untuk menyaring berkas yang tidak perlu diproses saat build Vercel (menghemat kuota dan memangkas waktu build serverless).
+     - Diperbarui `vercel.json` dengan konfigurasi framework Next.js, alokasi memori & batas durasi Serverless Python `api/index.py`, serta security headers.
+  2. **Dukungan Neon PostgreSQL Serverless**:
+     - Database adapter di `backend/app/core/database.py` telah tervalidasi penuh untuk koneksi pooled Neon (`postgresql+asyncpg://`, `ssl=require`, `statement_cache_size=0`).
+     - Dibuat skrip otomatis [`scripts/init_neon_db.py`](file:///d:/vscode/VELTARA/scripts/init_neon_db.py) untuk menguji koneksi, menjalankan migrasi skema tabel, dan seeding awal ke Neon DB hanya dengan satu baris perintah.
+  3. **Vercel Blob Private Storage**:
+     - Rute broker terpercaya `/blob/upload` dan `/blob/sign` siap menggunakan token OIDC terkelola Vercel dengan kuota gratis.
+  4. **Dokumentasi & Environment**:
+     - Diperbarui `.env.vercel.example` dan `.env.example` ke spesifikasi VELTARA.ID.
+     - Disediakan panduan lengkap langkah-demi-langkah di [`VELTARA/VERCEL_DEPLOYMENT.md`](file:///d:/vscode/VELTARA/VELTARA/VERCEL_DEPLOYMENT.md).
+  5. **Verifikasi Kualitas**:
+     - `validate_kit.py`: OK.
+     - `npm test`: 9/9 phases passed.
+     - `next build`: 25/25 halaman sukses terkompilasi.

@@ -1,53 +1,60 @@
-# Rencana Kerja: Refactoring & Rebranding Total ke VELTARA.ID
+# Rencana Kerja: Deployment Vercel, Neon PostgreSQL, Vercel Blob & Filter Upload
 
-## 1. Identifikasi Masalah & Lingkup Perubahan
-- **Branding & Judul**: Banyak berkas masih memakai nama proyek lama (TALENTRA / VISTARA) di UI, metadata, cookie, mock data, layanan frontend/backend, dan dokumentasi.
-- **Aset Logo & Foto**: Logo PWA (`icon-192.svg`, `icon-512.svg`), `CircularLogoSpinner`, sidebar brand, dan login page masih menggunakan inisial "T" (TALENTRA). Perlu diganti dengan logo modern & ikon emblem "V" untuk VELTARA.
-- **Skill & Konfigurasi Proyek Lain**: Terdapat skill Android (`android-cli`, `android-dev`, `android-jetpack-compose-expert`) dan konfigurasi VISTARA di `AGENTS.md` serta `.agents/rules/` yang tidak relevan untuk web application Next.js + FastAPI ini.
-- **Git Repository & Remote**: Git remote masih mengarah ke `Talentra.git`. Perlu dialihkan ke `https://github.com/IAmYoursRey/VELTARA.git` pada branch `main` dengan `README.md` berawalan `# VELTARA`.
-- **AI Slop & Error Fixes**: Menghilangkan komentar hiasan robotik AI (`// ───`), menambahkan konfigurasi ESLint (`.eslintrc.json`) agar `next lint` tidak terhenti, dan memastikan seluruh suite tes (Phase 1-9) lolos.
+## 1. Identifikasi Masalah & Kebutuhan
+- **Target Deployment**: Aplikasi VELTARA.ID (Next.js 14 App Router + Python FastAPI Serverless) harus siap digunakan dan dideploy di platform **Vercel Free-Tier**.
+- **Database Neon PostgreSQL**: Memanfaatkan database gratis Neon (Serverless PostgreSQL) sebagai single-source-of-truth terpadu untuk data siswa, sekolah, portofolio, rubrik, sesi, dan verifikasi publik.
+- **Object Storage Vercel Blob**: Mengonfigurasi Vercel Blob private storage untuk penyimpanan bukti karya siswa dan file CV digital secara aman dengan kuota gratis.
+- **Filter Upload (Apa yang Perlu & Tidak Perlu Diunggah)**:
+  - **Git Upload (`.gitignore`)**: Melindungi secrets (`.env*`), database lokal (`*.sqlite`, `*.db`), storage upload lokal (`storage_data/`, `uploads/`), logs, cache OS/Node, dan build artifacts dari commit repository.
+  - **Vercel Build Upload (`.vercelignore`)**: Mengabaikan artefak internal AI (`.ai-sync/`, `.agents/`), test suites (`scripts/test_*.ts`, `backend/tests/`), artefak lokal, dan dokumentasi arsitektur internal agar ukuran payload serverless function ringan, cepat di-build, dan tidak melebihi batas kuota Vercel.
+- **Tooling & Migrasi**: Menyediakan skrip dan petunjuk satu langkah bagi pengguna untuk menghubungkan dan menginisialisasi tabel Neon DB dengan mudah.
 
 ---
 
 ## 2. Langkah Kerja Terukur
-1. **Inisialisasi Sinkronisasi Memori (.ai-sync/)**:
-   - Setup folder `.ai-sync/` lengkap: `README.md`, `STATE.md`, `HANDOFF.md`, `TASKS.md`, `PLANS.md`, `DECISIONS.md`, `CHANGELOG.md`, `ERRORS.md`, `BOARD.md`, `AGENTS.md`, dan log sesi.
-2. **Desain & Implementasi Aset Logo Baru (VELTARA)**:
-   - Buat logo SVG baru untuk `public/icons/icon-192.svg` dan `public/icons/icon-512.svg` dengan lambang geometris modern "V" (gradasi ungu-indigo premium, rounded squircle, high-resolution).
-   - Perbarui `CircularLogoSpinner.tsx` dengan emblem "V" dan styling harmonis.
-   - Perbarui emblem logo di `Sidebar.tsx` dan `login/page.tsx`.
-3. **Rebranding & Rename Kode (Frontend, Services, Lib, Mocks, App Shell)**:
-   - `package.json`: `"name": "veltara-id"`.
-   - `layout.tsx`, `manifest.ts`, `page.tsx`, `loading.tsx`, `offline/page.tsx`, `login/page.tsx`, `Header.tsx`, `Sidebar.tsx`.
-   - Services (`auth.service.ts`, `cv.service.ts`, `verification.service.ts`, `settings.service.ts`, `mock-state.ts`, dll):
-     - Ganti cookie `talentra_session` -> `veltara_session`, `talentra_csrf` -> `veltara_csrf`.
-     - Ganti storage keys `talentra_school_settings` -> `veltara_school_settings`, dll.
-     - Ganti kode display verifikasi: `TLN-` -> `VLT-`.
-     - Ganti `TALENTRA-CV-` -> `VELTARA-CV-`.
-   - `src/lib/jwt.ts` & `src/middleware.ts`: `iss: 'veltara.id'`, `aud: 'veltara.id'`, rahasia dev default `veltara-dev-secret-key-32-bytes-minimum-length-req`.
-   - `src/mocks/`: domain email `@veltara.id`, entitas sekolah Sekolah VELTARA.
-4. **Pembersihan Skill & Aturan AI**:
-   - Hapus folder Android yang tidak relevan dari `.agents/skills/`: `android-cli`, `android-dev`, `android-jetpack-compose-expert`.
-   - Hapus `.agents/rules/03-android-architecture-and-logic.md` dan gantikan dengan standar web/fullstack VELTARA.
-   - Perbarui `AGENTS.md`: bersihkan referensi VISTARA dan path lama `d:/vscode/VISTARA`, catat katalog skill VELTARA (`veltara-auth-rbac`, dll).
-   - Perbarui `GEMINI.md`: ubah judul dan instruksi menjadi VELTARA.ID.
-5. **Perbaikan Error & AI Slop**:
-   - Tambahkan `.eslintrc.json` (`{"extends": "next/core-web-vitals"}`).
-   - Bersihkan komentar berformat robotik (`// ───`, boilerplate berlebihan).
-   - Perbarui seluruh script test (`scripts/test_phase1.ts` s.d. `test_phase9.ts`) agar mencocokkan invariant VELTARA (`VLT-`, `VELTARA.ID`, `veltara.id`).
-6. **Konfigurasi Git & README.md**:
-   - Tulis `README.md` berawalan `# VELTARA`.
-   - Set remote origin ke `https://github.com/IAmYoursRey/VELTARA.git` dan branch `main`.
-7. **Verifikasi Penuh**:
-   - Jalankan `npm.cmd run typecheck`.
-   - Jalankan `npm.cmd run lint`.
-   - Jalankan `npm.cmd test`.
-   - Jalankan `npm.cmd run build`.
+
+1. **Pembuatan `.vercelignore` (Filter Berkas untuk Vercel Build)**:
+   - Definisikan file dan folder yang **TIDAK PERLU** diunggah atau diproses oleh build engine Vercel:
+     - `.ai-sync/` (catatan sinkronisasi AI)
+     - `.agents/` (katalog prompt dan skill AI berukuran besar)
+     - `scripts/` (testing suite dan validator lokal)
+     - `backend/tests/` (unit & integration tests Python lokal)
+     - `backend/storage_data/`, `uploads/`, `local_storage/`
+     - `*.sqlite`, `*.db`, `test_*.db`
+     - `.git/`, `.github/`, `.vscode/`
+     - File dokumentasi internal yang tidak memengaruhi runtime.
+2. **Penyempurnaan `.gitignore` (Filter Berkas untuk Git)**:
+   - Pastikan seluruh secret, file `.env.production.local`, storage data lokal, dan cache benar-benar terisolasi dari Git.
+3. **Konfigurasi Vercel (`vercel.json`) & Routing**:
+   - Pastikan `vercel.json` memiliki konfigurasi headers keamanan, memori/maxDuration function Python jika diperlukan, dan harmonis dengan Next.js App Router & FastAPI runtime di `api/index.py`.
+4. **Adapter & Validasi Neon PostgreSQL**:
+   - Periksa `backend/app/core/database.py` dan `backend/app/core/config.py` untuk memastikan koneksi Neon PostgreSQL:
+     - Menormalkan connection string Neon (`postgresql+asyncpg://...pooler...` & `ssl=require`).
+     - Menghapus opsi libpq yang tidak kompatibel (`channel_binding`).
+     - Mengatur connection pool hemat koneksi (`AsyncAdaptedQueuePool` max 2 atau `NullPool`) untuk mencegah connection explosion pada serverless function.
+5. **Vercel Blob Integration (Private)**:
+   - Memastikan `src/app/blob/upload/route.ts` dan `src/app/blob/sign/route.ts` siap menggunakan token OIDC Vercel (`VERCEL_OIDC_TOKEN`) atau fallback `BLOB_READ_WRITE_TOKEN`.
+   - Mengonfigurasi `backend/app/storage/vercel_blob.py` dan `src/lib/blob-security.ts` agar tersinkronisasi dengan secret `BLOB_BROKER_HMAC_SECRET`.
+6. **Script Otomatisasi Migrasi Neon (`scripts/init_neon_db.py`)**:
+   - Buat skrip pembantu Python yang bisa dieksekusi dengan mudah untuk menjalankan migrasi skema tabel dan seed initial data ke Neon Database.
+7. **Pembaruan Konfigurasi & Dokumentasi Environment**:
+   - Perbarui `.env.vercel.example` dan `.env.example` dengan branding `VELTARA.ID`.
+   - Perbarui [`VELTARA/VERCEL_DEPLOYMENT.md`](file:///d:/vscode/VELTARA/VELTARA/VERCEL_DEPLOYMENT.md) dengan panduan langkah-demi-langkah jelas:
+     - Cara membuat DB Neon gratis dan mengambil Pooled URL.
+     - Cara membuat Private Blob Store di Vercel.
+     - Cara mengatur Environment Variables di Vercel.
+     - Cara menjalankan inisialisasi tabel Neon.
+8. **Verifikasi Build & Test**:
+   - Jalankan `npm.cmd run typecheck`, `npm.cmd run lint`, `npm.cmd test`, dan `npm.cmd run build`.
+   - Pastikan tidak ada regresi dan 25 rute sukses ter-generate.
+9. **Git Commit & Push**:
+   - Stage semua perubahan konfigurasi dan dokumentasi.
+   - Commit dan push ke `https://github.com/IAmYoursRey/VELTARA.git`.
 
 ---
 
 ## 3. Pre-Execution Self-Correction (Evaluasi Mandiri)
-- **Konsistensi Cookie & JWT**: Perubahan nama cookie `veltara_session` dan `iss/aud: 'veltara.id'` harus sinkron 100% antara `middleware.ts`, `auth.service.ts`, dan suite `test_phase2.ts`. Jika salah satu tidak sinkron, tes RBAC akan gagal.
-- **Prefix Kode Verifikasi**: Perubahan prefix dari `TLN-` ke `VLT-` pada `verification.service.ts` harus diikuti perubahan regex/pola di `test_phase8.ts` dan `test_phase9.ts`.
-- **Git Push Remote**: Jangan menghapus commit history yang ada jika tidak perlu, cukup ubah url remote `git remote set-url origin https://github.com/IAmYoursRey/VELTARA.git` dan lakukan commit komprehensif agar kode tidak hilang.
-- **Next.js Build**: Setelah semua perubahan, `next build` harus lulus menghasilkan 25 rute statis/dinamis tanpa peringatan sintaks.
+- **Koneksi Neon Serverless**: Neon menggunakan PgBouncer pooler secara default pada mode pooling. Asyncpg akan gagal jika prepared statement di-cache pada pooled connection. Karena itu, setting `statement_cache_size: 0` dan `prepared_statement_cache_size: 0` di `database.py` harus tetap aktif.
+- **Vercel Blob Private vs Public**: Vercel Blob store harus disetel ke `access: private` untuk melindungi bukti karya siswa dan dokumen CV. Penandatanganan token hanya dilakukan melalui broker terpercaya `/blob/sign` dan `/blob/upload`.
+- **Tidak Memutus `.agents/` di Git**: `.agents/` tetap di-commit ke Git (karena dibutuhkan untuk instruksi agent di repo), namun dimasukkan ke `.vercelignore` agar tidak membebani deployment size Vercel.
+- **Zero Runtime Error**: Build Next.js (`npm run build`) harus tetap menghasilkan exit code 0 dengan 25 halaman terkompilasi.

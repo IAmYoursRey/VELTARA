@@ -470,7 +470,7 @@ async def seed_development_data(session_factory: async_sessionmaker[AsyncSession
                 )
 
         await session.commit()
-        print("✓ Development synthetic data successfully seeded into database.")
+        print("[OK] Development synthetic data successfully seeded into database.")
 
 
 if __name__ == "__main__":

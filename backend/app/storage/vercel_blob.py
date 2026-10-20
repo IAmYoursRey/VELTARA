@@ -34,7 +34,7 @@ class VercelBlobStorage(ObjectStorage):
         self.secret = (
             getattr(settings, "blob_broker_hmac_secret", None)
             or os.getenv("BLOB_BROKER_HMAC_SECRET")
-            or "talentra-blob-broker-dev-secret-32-bytes-min"
+            or "veltara-blob-broker-dev-secret-32-bytes-min"
         ).encode("utf-8")
 
     def _broker_sign(self, action: str, object_key: str, ttl: Optional[int] = None) -> tuple[int, str]:

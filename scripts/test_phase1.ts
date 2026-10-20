@@ -11,7 +11,7 @@ import { reviewService } from '../src/services/review.service';
 import { verificationService } from '../src/services/verification.service';
 
 async function runTests() {
-  console.log('--- Running TALENTRA Phase 1 Acceptance & Invariant Tests ---');
+  console.log('--- Running VELTARA Phase 1 Acceptance & Invariant Tests ---');
 
   // Test 1: Canonical tags count and validity
   assert(MOCK_CANONICAL_TAGS.length >= 10, 'Must have at least 10 canonical tags');

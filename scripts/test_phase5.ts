@@ -1,7 +1,7 @@
 import { MOCK_RUBRIC_DIMENSIONS, RUBRIC_LEVEL_LABELS } from "../src/mocks/soft-skills-rubric.mock";
 import { SoftSkillRubricDimension } from "../src/types/review.types";
 
-console.log("--- Running TALENTRA Phase 5 Frontend Invariant Tests ---");
+console.log("--- Running VELTARA Phase 5 Frontend Invariant Tests ---");
 
 // 1. Five soft-skill rubric dimensions strictly defined
 console.log("1. Verifying 5 canonical soft-skill rubric dimensions...");

@@ -27,7 +27,7 @@ export function base64UrlEncode(bytes: Uint8Array): string {
   return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
-const DEFAULT_SECRET = 'talentra-dev-secret-key-32-bytes-minimum-length-req';
+const DEFAULT_SECRET = 'veltara-dev-secret-key-32-bytes-minimum-length-req';
 
 export async function signSessionToken(claims: {
   sub: string;
@@ -46,8 +46,8 @@ export async function signSessionToken(claims: {
     sid: claims.sid || `sid_${Math.random().toString(36).substring(2, 10)}`,
     school_id: claims.school_id || 'sch_teladan_001',
     role: claims.role,
-    iss: 'talentra.id',
-    aud: 'talentra.id',
+    iss: 'veltara.id',
+    aud: 'veltara.id',
     exp,
   };
 

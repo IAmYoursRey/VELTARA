@@ -212,7 +212,7 @@ export const INITIAL_MOCK_PORTFOLIO_ITEMS: PortfolioItem[] = [
     studentId: 'usr_std_001',
     studentName: 'Alya Rahma Azzahra',
     studentClass: 'XII RPL 1',
-    teacherFeedback: 'Portofolio TALENTRA difokuskan pada karya nyata, proyek pembelajaran, dan rekam jejak kompetensi terstruktur. Kegiatan rekreasi pribadi belum memenuhi indikator bukti karya pembelajaran.',
+    teacherFeedback: 'Portofolio VELTARA difokuskan pada karya nyata, proyek pembelajaran, dan rekam jejak kompetensi terstruktur. Kegiatan rekreasi pribadi belum memenuhi indikator bukti karya pembelajaran.',
     timeline: [
       {
         id: 'tl_011',

@@ -85,13 +85,13 @@ export default function StudentCVPage() {
       // Demo fallback
       setGeneratedCv({
         snapshotId: 'snap-v1',
-        displayCode: 'TLN-CV-2026',
+        displayCode: 'VLT-CV-2026',
         contentDigest: 'sha256-mock-digest',
-        fingerprint: 'TLN-94B8-E210',
+        fingerprint: 'VLT-94B8-E210',
         status: 'active',
         selectedProjectCount: selectedIds.length,
-        verificationToken: 'tlnt_token_v94b8e21',
-        verificationUrl: '/verify/tlnt_token_v94b8e21',
+        verificationToken: 'vlt_token_v94b8e21',
+        verificationUrl: '/verify/vlt_token_v94b8e21',
         issuedAt: new Date().toISOString(),
         expiresAt: null,
       });
@@ -135,7 +135,7 @@ export default function StudentCVPage() {
                 <span>Dokumen Portofolio Resmi Siswa</span>
               </div>
               <span className="bg-purple-800/60 px-2 py-0.5 rounded text-[10px] text-purple-200 font-mono">
-                TLN-DOC-2026
+                VLT-DOC-2026
               </span>
             </div>
 
@@ -254,7 +254,7 @@ export default function StudentCVPage() {
                       Scan QR untuk membuktikan keaslian dokumen tanpa membuka data pribadi siswa.
                     </p>
                     <p className="text-[10px] font-mono text-purple-700 font-bold mt-0.5">
-                      FINGERPRINT: TLN-94B8-E210-2026
+                      FINGERPRINT: VLT-94B8-E210-2026
                     </p>
                   </div>
                 </div>
@@ -268,7 +268,7 @@ export default function StudentCVPage() {
 
             {/* Document Footer */}
             <div className="bg-[#FAF8FE] px-8 py-3.5 border-t border-[#F0EBF8] flex items-center justify-between text-[11px] text-[#867798]">
-              <span>TALENTRA.ID Educational Trust Network</span>
+              <span>VELTARA.ID Educational Trust Network</span>
               <button
                 type="button"
                 onClick={() => window.print()}

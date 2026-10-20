@@ -18,10 +18,10 @@ export class HTTPVerificationService implements IVerificationService {
     const trimmedToken = token.trim();
 
     // Demo tokens for test suite and prototype evaluation
-    if (trimmedToken === 'tlnt_token_v94b8e21') {
+    if (trimmedToken === 'vlt_token_v94b8e21' || trimmedToken === 'tlnt_token_v94b8e21') {
       return {
         status: 'verified',
-        displayCode: 'TLN-2026-94B8',
+        displayCode: 'VLT-2026-94B8',
         studentDisplayName: 'Dimas Pratama',
         schoolDisplayName: 'SMK Negeri 1 Cimahi',
         validatorName: 'Budi Santoso, S.Kom',
@@ -30,13 +30,13 @@ export class HTTPVerificationService implements IVerificationService {
         academicYear: '2025/2026',
         issuedAt: '2026-09-25T10:00:00Z',
         snapshotDigestShort: '3A8B-2C1D-9E4F',
-        verificationStatement: 'Dokumen portofolio digital TALENTRA.ID telah divalidasi resmi.',
+        verificationStatement: 'Dokumen portofolio digital VELTARA.ID telah divalidasi resmi.',
       };
     }
     if (trimmedToken === 'demo-expired') {
       return {
         status: 'expired',
-        displayCode: 'TLN-2025-EXPD',
+        displayCode: 'VLT-2025-EXPD',
         studentDisplayName: 'Dimas Pratama',
         schoolDisplayName: 'SMK Negeri 1 Cimahi',
         issuedAt: '2025-01-01T10:00:00Z',
@@ -47,7 +47,7 @@ export class HTTPVerificationService implements IVerificationService {
     if (trimmedToken === 'demo-revoked') {
       return {
         status: 'revoked',
-        displayCode: 'TLN-2025-RVKD',
+        displayCode: 'VLT-2025-RVKD',
         studentDisplayName: 'Dimas Pratama',
         schoolDisplayName: 'SMK Negeri 1 Cimahi',
         issuedAt: '2025-01-01T10:00:00Z',
@@ -83,21 +83,21 @@ export class HTTPVerificationService implements IVerificationService {
       return data;
     } catch {
       // Offline / test fallback for demo tokens when backend server is offline
-      if (token === 'tlnt_token_v94b8e21') {
+      if (token === 'vlt_token_v94b8e21' || token === 'tlnt_token_v94b8e21') {
         return {
           status: 'verified',
-          displayCode: 'TLN-2026-94B8',
+          displayCode: 'VLT-2026-94B8',
           studentDisplayName: 'Dimas Pratama',
           schoolDisplayName: 'SMK Negeri 1 Cimahi',
           issuedAt: '2026-09-25T10:00:00Z',
-          snapshotDigestShort: 'TLN-A1B2-C3D4',
-          verificationStatement: 'Dokumen portofolio digital TALENTRA.ID telah divalidasi resmi.',
+          snapshotDigestShort: 'VLT-A1B2-C3D4',
+          verificationStatement: 'Dokumen portofolio digital VELTARA.ID telah divalidasi resmi.',
         };
       }
       if (token === 'demo-expired') {
         return {
           status: 'expired',
-          displayCode: 'TLN-2025-EXPD',
+          displayCode: 'VLT-2025-EXPD',
           studentDisplayName: 'Dimas Pratama',
           schoolDisplayName: 'SMK Negeri 1 Cimahi',
           issuedAt: '2025-01-01T10:00:00Z',
@@ -108,7 +108,7 @@ export class HTTPVerificationService implements IVerificationService {
       if (token === 'demo-revoked') {
         return {
           status: 'revoked',
-          displayCode: 'TLN-2025-RVKD',
+          displayCode: 'VLT-2025-RVKD',
           studentDisplayName: 'Dimas Pratama',
           schoolDisplayName: 'SMK Negeri 1 Cimahi',
           issuedAt: '2025-01-01T10:00:00Z',
@@ -119,7 +119,7 @@ export class HTTPVerificationService implements IVerificationService {
 
       return {
         status: 'invalid',
-        message: 'Tidak dapat terhubung ke server verifikasi TALENTRA.ID.',
+        message: 'Tidak dapat terhubung ke server verifikasi VELTARA.ID.',
       };
     }
   }

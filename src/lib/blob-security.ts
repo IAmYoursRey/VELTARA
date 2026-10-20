@@ -12,7 +12,7 @@ export function getBlobBrokerSecret(): string {
   if (process.env.APP_ENV === 'production' || process.env.NODE_ENV === 'production') {
     throw new Error('CRITICAL: BLOB_BROKER_HMAC_SECRET must be configured with >= 32 bytes in production');
   }
-  return secret || 'talentra-blob-broker-dev-secret-32-bytes-min';
+  return secret || 'veltara-blob-broker-dev-secret-32-bytes-min';
 }
 
 /**

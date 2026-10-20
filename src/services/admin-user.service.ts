@@ -12,7 +12,7 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || '';
 
 function getCsrfToken(): string {
   if (typeof document !== 'undefined') {
-    const match = document.cookie.match(/(?:^|;\s*)talentra_csrf=([^;]+)/);
+    const match = document.cookie.match(/(?:^|;\s*)(?:veltara_csrf|talentra_csrf)=([^;]+)/);
     if (match) return match[1];
   }
   return '';

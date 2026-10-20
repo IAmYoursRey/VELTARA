@@ -11,7 +11,7 @@ import {
   VerificationStatus,
 } from "../src/types/verification.types";
 
-console.log("--- Running TALENTRA Phase 8 Frontend & Authenticity Invariant Tests ---");
+console.log("--- Running VELTARA Phase 8 Frontend & Authenticity Invariant Tests ---");
 
 // 1. Invariant: CV Selection Policy Bounds (1 to 8 approved items)
 console.log("1. Verifying CV Selection Policy bounds...");
@@ -35,7 +35,7 @@ const validStatuses: VerificationStatus[] = ["verified", "expired", "revoked", "
 
 const mockVerifiedResponse: PublicVerificationResult = {
   status: "verified",
-  displayCode: "TLN-8F4K-2M7P",
+  displayCode: "VLT-8F4K-2M7P",
   studentDisplayName: "Siti Nurhaliza",
   schoolDisplayName: "SMK Negeri 2 Bandung",
   issuedAt: "2026-09-25T12:00:00Z",

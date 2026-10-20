@@ -24,7 +24,7 @@ export interface IAuthService {
 
 function getCsrfToken(): string | null {
   if (typeof document === 'undefined') return null;
-  const match = document.cookie.match(/(?:^|;\s*)talentra_csrf=([^;]+)/);
+  const match = document.cookie.match(/(?:^|;\s*)(?:veltara_csrf|talentra_csrf)=([^;]+)/);
   return match ? decodeURIComponent(match[1]) : null;
 }
 
@@ -52,7 +52,7 @@ function mapUserResponseToProfile(raw: ApiUserResponse): UserProfile {
     name: displayName,
     role: raw.role,
     email: raw.email,
-    schoolName: raw.school?.name || 'Sekolah TALENTRA',
+    schoolName: raw.school?.name || 'Sekolah VELTARA',
     maskedIdentifier: raw.maskedIdentifier || '',
     className: raw.className || undefined,
     title: raw.title || undefined,
@@ -67,7 +67,7 @@ class AuthService implements IAuthService {
   constructor() {
     if (typeof window !== 'undefined') {
       try {
-        const cached = localStorage.getItem('talentra_cached_user');
+        const cached = localStorage.getItem('veltara_cached_user') || localStorage.getItem('talentra_cached_user');
         if (cached) {
           this.inMemoryUser = JSON.parse(cached);
           this.isLoaded = true;
@@ -77,7 +77,7 @@ class AuthService implements IAuthService {
       }
 
       if (!this.inMemoryUser && typeof document !== 'undefined') {
-        const demoMatch = document.cookie.match(/(?:^|;\s*)talentra_session=demo_session_([^;]+)/);
+        const demoMatch = document.cookie.match(/(?:^|;\s*)(?:veltara_session|talentra_session)=demo_session_([^;]+)/);
         if (demoMatch) {
           const role = demoMatch[1] as UserRole;
           if (['student', 'teacher', 'admin'].includes(role)) {
@@ -109,8 +109,9 @@ class AuthService implements IAuthService {
     if (typeof window !== 'undefined') {
       try {
         if (this.inMemoryUser) {
-          localStorage.setItem('talentra_cached_user', JSON.stringify(this.inMemoryUser));
+          localStorage.setItem('veltara_cached_user', JSON.stringify(this.inMemoryUser));
         } else {
+          localStorage.removeItem('veltara_cached_user');
           localStorage.removeItem('talentra_cached_user');
         }
       } catch {
@@ -149,7 +150,7 @@ class AuthService implements IAuthService {
 
     // Check for demo session cookie for seamless online prototype navigation
     if (typeof document !== 'undefined') {
-      const demoMatch = document.cookie.match(/(?:^|;\s*)talentra_session=demo_session_([^;]+)/);
+      const demoMatch = document.cookie.match(/(?:^|;\s*)(?:veltara_session|talentra_session)=demo_session_([^;]+)/);
       if (demoMatch) {
         const role = demoMatch[1] as UserRole;
         if (['student', 'teacher', 'admin'].includes(role)) {
@@ -331,7 +332,7 @@ class AuthService implements IAuthService {
     this.isLoaded = true;
 
     if (typeof document !== 'undefined') {
-      document.cookie = `talentra_session=demo_session_${role}; path=/; max-age=604800; samesite=lax`;
+      document.cookie = `veltara_session=demo_session_${role}; path=/; max-age=604800; samesite=lax`;
     }
 
     this.notify();
@@ -375,7 +376,7 @@ class AuthService implements IAuthService {
     }
 
     if (typeof document !== 'undefined') {
-      document.cookie = 'talentra_session=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      document.cookie = 'veltara_session=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     }
 
     this.inMemoryUser = null;

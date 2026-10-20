@@ -118,12 +118,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentUser, onLogout, onNavig
             className="flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-purple-400 rounded-lg group"
           >
             <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-[#6D28D9] via-[#8B5CF6] to-[#A855F7] flex items-center justify-center font-black text-white text-base shadow-md group-hover:scale-105 transition-transform">
-              T
-              <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-[#C084FC] ring-2 ring-[#2E1065]" />
+              V
+              <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-[#38BDF8] ring-2 ring-[#2E1065]" />
             </div>
             <div>
               <span className="font-extrabold text-base tracking-tight text-white block leading-none">
-                TALENTRA<span className="text-[#C084FC]">.ID</span>
+                VELTARA<span className="text-[#C084FC]">.ID</span>
               </span>
               <span className="block text-[9px] text-[#A78BFA] font-bold tracking-widest uppercase mt-1">
                 {getRoleLabel(currentUser.role)}

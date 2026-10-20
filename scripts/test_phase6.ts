@@ -3,7 +3,7 @@ import { adminClassService } from "../src/services/admin-class.service";
 import { analyticsService } from "../src/services/analytics.service";
 import { TalentHeatmapDimension } from "../src/types/analytics.types";
 
-console.log("--- Running TALENTRA Phase 6 Frontend & Domain Invariant Tests ---");
+console.log("--- Running VELTARA Phase 6 Frontend & Domain Invariant Tests ---");
 
 // 1. Masked identifier invariant: user listings must contain masked identifiers
 console.log("1. Verifying masked identifier privacy invariant...");

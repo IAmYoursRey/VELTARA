@@ -23,14 +23,14 @@ export default function HomePage() {
   return (
     <div
       role="status"
-      aria-label="Mengarahkan ke aplikasi TALENTRA.ID..."
+      aria-label="Mengarahkan ke aplikasi VELTARA.ID..."
       className="min-h-screen bg-[#FCFBFF] flex flex-col items-center justify-center p-6 select-none animate-in fade-in duration-150"
     >
       <div className="relative flex flex-col items-center max-w-sm text-center space-y-5">
         <CircularLogoSpinner size="lg" />
         <div className="space-y-1.5">
           <h2 className="text-base font-extrabold text-[#261331] tracking-tight">
-            Mengarahkan ke TALENTRA.ID...
+            Mengarahkan ke VELTARA.ID...
           </h2>
           <p className="text-xs text-[#6F607D]">
             Memeriksa autentikasi dan hak akses akun Anda.

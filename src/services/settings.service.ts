@@ -75,7 +75,7 @@ class SettingsService {
   constructor() {
     if (typeof window !== 'undefined') {
       try {
-        const stored = localStorage.getItem('talentra_school_settings');
+        const stored = localStorage.getItem('veltara_school_settings');
         if (stored) {
           this.cache = { ...DEFAULT_SCHOOL_SETTINGS, ...JSON.parse(stored) };
           this.isLoaded = true;
@@ -89,7 +89,7 @@ class SettingsService {
   public getCachedSettings(): AllSchoolSettings {
     if (typeof window !== 'undefined' && !this.isLoaded) {
       try {
-        const stored = localStorage.getItem('talentra_school_settings');
+        const stored = localStorage.getItem('veltara_school_settings');
         if (stored) {
           this.cache = { ...DEFAULT_SCHOOL_SETTINGS, ...JSON.parse(stored) };
           this.isLoaded = true;
@@ -114,7 +114,7 @@ class SettingsService {
 
     if (typeof window !== 'undefined') {
       try {
-        localStorage.setItem('talentra_school_settings', JSON.stringify(this.cache));
+        localStorage.setItem('veltara_school_settings', JSON.stringify(this.cache));
       } catch {
         // Fallback
       }
@@ -127,7 +127,7 @@ class SettingsService {
     this.cache = { ...DEFAULT_SCHOOL_SETTINGS, updatedAt: new Date().toISOString() };
     if (typeof window !== 'undefined') {
       try {
-        localStorage.removeItem('talentra_school_settings');
+        localStorage.removeItem('veltara_school_settings');
       } catch {
         // Fallback
       }

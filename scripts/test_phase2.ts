@@ -1,5 +1,5 @@
 /**
- * TALENTRA.ID — Phase 2 Acceptance & Invariant Verification Suite
+ * VELTARA.ID — Phase 2 Acceptance & Invariant Verification Suite
  * 
  * Verifies:
  * 1. Normalized official identifier constraints (NISN 10 digits, NUPTK 16 digits, NIP 18 digits, NPSN 8 alphanumeric)
@@ -14,7 +14,7 @@
 
 import assert from 'assert';
 
-console.log('--- Running TALENTRA Phase 2 Security & RBAC Invariant Tests ---');
+console.log('--- Running VELTARA Phase 2 Security & RBAC Invariant Tests ---');
 
 // 1. Identifier Normalization Tests
 console.log('1. Verifying server-side login identifier rules...');
@@ -56,8 +56,8 @@ const sampleJwtPayload = {
   sid: 'sess-uuid-12345',
   school_id: 'sch_teladan_001',
   role: 'student',
-  iss: 'talentra.id',
-  aud: 'talentra.id',
+  iss: 'veltara.id',
+  aud: 'veltara.id',
   iat: 1774435200,
   exp: 1774437000,
 };
@@ -131,7 +131,7 @@ async function simulateMiddlewareGuard(token: string | null, path: string, secre
 }
 
 async function testMiddleware() {
-  const secret = 'talentra-dev-secret-key-32-bytes-minimum-length-req';
+  const secret = 'veltara-dev-secret-key-32-bytes-minimum-length-req';
   const header = base64UrlEncode(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
   const payload = base64UrlEncode(
     JSON.stringify({

@@ -1,5 +1,54 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <rect width="512" height="512" rx="96" fill="#3157D5"/>
-  <path d="M150 160 H362 V210 H280 V370 H232 V210 H150 Z" fill="#FFFFFF"/>
-  <circle cx="362" cy="160" r="28" fill="#0F8F83"/>
+  <defs>
+    <linearGradient id="bgGrad512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E0A3C"/>
+      <stop offset="50%" stop-color="#2E1065"/>
+      <stop offset="100%" stop-color="#0F051D"/>
+    </linearGradient>
+    <linearGradient id="leftWing512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A78BFA"/>
+      <stop offset="60%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#4C1D95"/>
+    </linearGradient>
+    <linearGradient id="rightWing512" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#C084FC"/>
+      <stop offset="40%" stop-color="#9333EA"/>
+      <stop offset="100%" stop-color="#581C87"/>
+    </linearGradient>
+    <linearGradient id="innerFacet512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E9D5FF"/>
+      <stop offset="100%" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <linearGradient id="cyanFacet512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#818CF8"/>
+    </linearGradient>
+    <filter id="glow512" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="16" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background squircle -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad512)" stroke="#4C1D95" stroke-width="4"/>
+
+  <!-- Subtle glow aura -->
+  <circle cx="256" cy="256" r="128" fill="#8B5CF6" opacity="0.32" filter="url(#glow512)"/>
+
+  <!-- Modern Faceted 3D "V" Emblem -->
+  <!-- Left Outer Facet -->
+  <polygon points="122,138 198,138 240,314 186,314" fill="url(#leftWing512)" />
+  <!-- Left Inner Facet -->
+  <polygon points="198,138 234,138 256,374 234,374" fill="url(#cyanFacet512)" opacity="0.9" />
+
+  <!-- Right Inner Facet -->
+  <polygon points="278,138 314,138 278,374 256,374" fill="url(#innerFacet512)" />
+  <!-- Right Outer Facet -->
+  <polygon points="314,138 390,138 326,314 272,314" fill="url(#rightWing512)" />
+
+  <!-- Center Vertex Cap & Highlight -->
+  <polygon points="234,374 256,400 278,374 256,352" fill="#FFFFFF" />
+
+  <!-- Authenticity Diamond Indicator -->
+  <circle cx="396" cy="128" r="18" fill="#38BDF8" stroke="#1E0A3C" stroke-width="4"/>
 </svg>

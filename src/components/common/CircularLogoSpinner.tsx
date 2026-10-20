@@ -53,14 +53,14 @@ export const CircularLogoSpinner: React.FC<CircularLogoSpinnerProps> = ({
         )}
       />
 
-      {/* 4. Center circular emblem badge with TALENTRA "T" */}
+      {/* Center circular emblem badge with VELTARA "V" */}
       <div
         className={cn(
           'relative rounded-full bg-gradient-to-br from-[#2E1065] via-[#4C1D95] to-[#6D28D9] flex items-center justify-center font-black text-white shadow-md shadow-purple-950/20 border border-purple-300/40 select-none',
           sizeClasses.badge
         )}
       >
-        T
+        V
         {/* Status indicator dot */}
         <span
           className={cn(

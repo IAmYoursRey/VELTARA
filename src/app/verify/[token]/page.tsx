@@ -46,7 +46,7 @@ export default function VerificationPage() {
         // Fallback verified result for demo token
         setData({
           status: 'verified',
-          displayCode: 'TLN-2026-94B8',
+          displayCode: 'VLT-2026-94B8',
           studentDisplayName: 'Dimas Pratama',
           schoolDisplayName: 'SMK Negeri 1 Cimahi',
           validatorName: 'Budi Santoso, S.Kom',
@@ -92,10 +92,10 @@ export default function VerificationPage() {
             </button>
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#6D28D9] via-[#8B5CF6] to-[#A855F7] flex items-center justify-center font-black text-white text-sm shadow-md">
-                T
+                V
               </div>
               <span className="font-black text-lg tracking-tight text-[#261331]">
-                TALENTRA<span className="text-[#8B5CF6]">.ID</span>
+                VELTARA<span className="text-[#8B5CF6]">.ID</span>
               </span>
             </div>
           </div>
@@ -263,7 +263,7 @@ export default function VerificationPage() {
                   <Hash className="w-3.5 h-3.5 text-slate-400" />
                   <span className="font-semibold text-[11px]">Nomor Register Dokumen:</span>
                   <span className="font-mono font-bold text-slate-900 bg-white px-2 py-0.5 rounded border border-slate-200">
-                    {data?.displayCode || 'TLN-2026-94B8'}
+                    {data?.displayCode || 'VLT-2026-94B8'}
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5 text-slate-600">
@@ -303,7 +303,7 @@ export default function VerificationPage() {
                 Jaminan Kepatuhan Perlindungan Privasi Data Siswa
               </p>
               <p className="text-[11px] text-[#6F607D]">
-                TALENTRA.ID tidak memublikasikan NISN, nomor kontak, atau karya draf. Halaman verifikasi publik ini menjamin autentisitas pencapaian siswa tanpa membuka data pribadi sensitif.
+                VELTARA.ID tidak memublikasikan NISN, nomor kontak, atau karya draf. Halaman verifikasi publik ini menjamin autentisitas pencapaian siswa tanpa membuka data pribadi sensitif.
               </p>
             </div>
           </div>

@@ -147,7 +147,7 @@ export class HTTPCVService implements ICVService {
     }
 
     const disposition = res.headers.get('Content-Disposition') || '';
-    let filename = `TALENTRA-CV-${snapshotId}.pdf`;
+    let filename = `VELTARA-CV-${snapshotId}.pdf`;
     const filenameMatch = disposition.match(/filename="?([^"]+)"?/);
     if (filenameMatch && filenameMatch[1]) {
       filename = filenameMatch[1];

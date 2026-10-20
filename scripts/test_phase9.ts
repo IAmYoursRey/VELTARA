@@ -5,7 +5,7 @@ import { adminUserService } from "../src/services/admin-user.service";
 import { adminClassService } from "../src/services/admin-class.service";
 import { analyticsService } from "../src/services/analytics.service";
 
-console.log("--- Running TALENTRA Phase 9 Integration & Production Hardening Tests ---");
+console.log("--- Running VELTARA Phase 9 Integration & Production Hardening Tests ---");
 
 async function runPhase9Tests() {
   // 1. Multi-role contract verification
@@ -32,8 +32,8 @@ async function runPhase9Tests() {
   const manifestRequiredKeys = ["name", "short_name", "start_url", "display", "icons"];
   // Mock manifest check
   const manifest = {
-    name: "TALENTRA.ID",
-    short_name: "TALENTRA",
+    name: "VELTARA.ID",
+    short_name: "VELTARA.ID",
     start_url: "/",
     display: "standalone",
     icons: [{ src: "/icon-192.png", sizes: "192x192", type: "image/png" }],
@@ -56,7 +56,7 @@ async function runPhase9Tests() {
 
   // 5. Verification token hash-only persistence & rate-limiting contract
   console.log("5. Verifying verification token security contract...");
-  const sampleToken = "TLN-SECURE-TOKEN-SAMPLE";
+  const sampleToken = "VLT-SECURE-TOKEN-SAMPLE";
   if (typeof sampleToken !== "string" || sampleToken.length < 10) {
     throw new Error("Invalid token contract");
   }

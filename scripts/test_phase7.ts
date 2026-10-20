@@ -5,7 +5,7 @@ import {
   RecommendationPath,
 } from "../src/types/recommendation.types";
 
-console.log("--- Running TALENTRA Phase 7 Frontend & Domain Invariant Tests ---");
+console.log("--- Running VELTARA Phase 7 Frontend & Domain Invariant Tests ---");
 
 // 1. Invariant: Confidence is not probability, and disallowed decision traits must NEVER exist
 console.log("1. Verifying confidence levels and forbidden traits exclusion...");

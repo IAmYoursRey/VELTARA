@@ -1,6 +1,6 @@
 export function getCsrfToken(): string {
   if (typeof document !== 'undefined') {
-    const match = document.cookie.match(/(?:^|;\s*)talentra_csrf=([^;]+)/);
+    const match = document.cookie.match(/(?:^|;\s*)(?:veltara_csrf|talentra_csrf)=([^;]+)/);
     if (match) return decodeURIComponent(match[1]);
   }
   return '';

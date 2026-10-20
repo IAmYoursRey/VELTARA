@@ -2,8 +2,8 @@ import { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'TALENTRA.ID — Portofolio Digital Pintar Siswa',
-    short_name: 'TALENTRA.ID',
+    name: 'VELTARA.ID — Portofolio Digital Pintar Siswa',
+    short_name: 'VELTARA.ID',
     description: 'Platform portofolio digital pintar dan analitik talenta siswa sekolah berbasis proof-of-work terverifikasi.',
     start_url: '/',
     display: 'standalone',

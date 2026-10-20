@@ -6,7 +6,7 @@ export default function GlobalLoading() {
   return (
     <div
       role="status"
-      aria-label="Memuat aplikasi TALENTRA.ID..."
+      aria-label="Memuat aplikasi VELTARA.ID..."
       className="fixed inset-0 z-50 bg-[#FCFBFF]/95 backdrop-blur-md flex flex-col items-center justify-center p-6 select-none animate-in fade-in duration-150"
     >
       <div className="relative flex flex-col items-center max-w-sm text-center space-y-5">
@@ -17,7 +17,7 @@ export default function GlobalLoading() {
         <div className="space-y-1.5">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-[#6D28D9] text-[11px] font-bold">
             <Sparkles className="w-3.5 h-3.5 text-[#8B5CF6] animate-spin" style={{ animationDuration: '3s' }} />
-            <span>TALENTRA.ID</span>
+            <span>VELTARA.ID</span>
           </div>
           <h2 className="text-base font-extrabold text-[#261331] tracking-tight">
             Memuat Halaman...

@@ -13,7 +13,7 @@ export default function OfflinePage() {
         </div>
         <h1 className="text-xl font-bold text-slate-900 tracking-tight">Koneksi Internet Terputus</h1>
         <p className="text-sm text-slate-600 mt-2 mb-6 leading-relaxed">
-          TALENTRA.ID tidak dapat memuat data terbaru karena Anda sedang luring (offline). Silakan periksa koneksi internet Anda dan coba kembali.
+          VELTARA.ID tidak dapat memuat data terbaru karena Anda sedang luring (offline). Silakan periksa koneksi internet Anda dan coba kembali.
         </p>
 
         <div className="space-y-2.5">
@@ -36,7 +36,7 @@ export default function OfflinePage() {
         </div>
 
         <p className="text-[11px] text-slate-400 mt-6">
-          Sistem PWA TALENTRA.ID melindungi kerahasiaan data siswa dan tidak menyimpan cache data pribadi saat offline.
+          Sistem PWA VELTARA.ID melindungi kerahasiaan data siswa dan tidak menyimpan cache data pribadi saat offline.
         </p>
       </div>
     </div>

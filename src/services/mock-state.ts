@@ -16,14 +16,14 @@ class MockAppState {
   private constructor() {
     if (typeof window !== 'undefined') {
       try {
-        const storedPortfolios = localStorage.getItem('talentra_offline_portfolios');
+        const storedPortfolios = localStorage.getItem('veltara_offline_portfolios');
         if (storedPortfolios) {
           const parsed = JSON.parse(storedPortfolios);
           if (Array.isArray(parsed) && parsed.length > 0) {
             this.portfolioItems = parsed;
           }
         }
-        const storedRubrics = localStorage.getItem('talentra_offline_rubrics');
+        const storedRubrics = localStorage.getItem('veltara_offline_rubrics');
         if (storedRubrics) {
           const parsed = JSON.parse(storedRubrics);
           Object.entries(parsed).forEach(([k, v]) => {
@@ -51,12 +51,12 @@ class MockAppState {
   private notify(): void {
     if (typeof window !== 'undefined') {
       try {
-        localStorage.setItem('talentra_offline_portfolios', JSON.stringify(this.portfolioItems));
+        localStorage.setItem('veltara_offline_portfolios', JSON.stringify(this.portfolioItems));
         const rubricObj: Record<string, RubricAssessment[]> = {};
         this.rubricAssessmentsMap.forEach((v, k) => {
           rubricObj[k] = v;
         });
-        localStorage.setItem('talentra_offline_rubrics', JSON.stringify(rubricObj));
+        localStorage.setItem('veltara_offline_rubrics', JSON.stringify(rubricObj));
       } catch {
         // Ignore localStorage quota errors
       }

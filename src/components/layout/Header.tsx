@@ -166,7 +166,7 @@ export const Header: React.FC<HeaderProps> = ({ currentUser, title, onOpenMobile
           )}
           <div>
             <h1 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
-              {title || 'TALENTRA.ID'}
+              {title || 'VELTARA.ID'}
             </h1>
             <p className="text-[11px] text-slate-500 hidden sm:block">
               {currentUser.schoolName}

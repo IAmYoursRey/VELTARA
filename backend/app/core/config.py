@@ -9,23 +9,23 @@ class Settings(BaseModel):
     
     # JWT Configuration
     jwt_secret_key: str = Field(
-        default_factory=lambda: os.getenv("JWT_SECRET_KEY", "talentra-dev-secret-key-32-bytes-minimum-length-req")
+        default_factory=lambda: os.getenv("JWT_SECRET_KEY", "veltara-dev-secret-key-32-bytes-minimum-length-req")
     )
     jwt_algorithm: str = "HS256"
-    jwt_issuer: str = "talentra.id"
-    jwt_audience: str = "talentra.id"
+    jwt_issuer: str = "veltara.id"
+    jwt_audience: str = "veltara.id"
     access_token_expire_minutes: int = 15
     refresh_token_expire_days: int = 7
     
     # Cookie Configuration
-    cookie_name: str = "talentra_session"
-    refresh_cookie_name: str = "talentra_refresh"
+    cookie_name: str = "veltara_session"
+    refresh_cookie_name: str = "veltara_refresh"
     cookie_secure: bool = Field(default_factory=lambda: os.getenv("APP_ENV", "development") == "production")
     cookie_samesite: Literal["lax", "none", "strict"] = "lax"
     cookie_domain: str | None = None
     
     # CSRF Configuration
-    csrf_cookie_name: str = "talentra_csrf"
+    csrf_cookie_name: str = "veltara_csrf"
     csrf_header_name: str = "X-CSRF-Token"
     
     # Demo Auth Configuration
@@ -35,16 +35,16 @@ class Settings(BaseModel):
 
     # Identifier Lookup Privacy Pepper
     identifier_lookup_pepper: str = Field(
-        default_factory=lambda: os.getenv("IDENTIFIER_LOOKUP_PEPPER", "talentra-identifier-lookup-pepper-v1")
+        default_factory=lambda: os.getenv("IDENTIFIER_LOOKUP_PEPPER", "veltara-identifier-lookup-pepper-v1")
     )
 
     # Relational Database (PostgreSQL)
     database_url: str = Field(
         default_factory=lambda: os.getenv(
             "DATABASE_URL",
-            "sqlite+aiosqlite:///./test_talentra.db"
+            "sqlite+aiosqlite:///./test_veltara.db"
             if (os.getenv("APP_ENV") == "test" or "pytest" in sys.modules)
-            else "postgresql+asyncpg://talentra_dev:talentra_dev_secret@localhost:5432/talentra_db",
+            else "postgresql+asyncpg://veltara_dev:veltara_dev_secret@localhost:5432/veltara_db",
         )
     )
     repository_backend: str = Field(
@@ -65,7 +65,7 @@ class Settings(BaseModel):
         default_factory=lambda: os.getenv("BLOB_READ_WRITE_TOKEN")
     )
     blob_broker_hmac_secret: str | None = Field(
-        default_factory=lambda: os.getenv("BLOB_BROKER_HMAC_SECRET", "talentra-blob-broker-dev-secret-32-bytes-min")
+        default_factory=lambda: os.getenv("BLOB_BROKER_HMAC_SECRET", "veltara-blob-broker-dev-secret-32-bytes-min")
     )
     blob_broker_token_ttl_seconds: int = Field(
         default_factory=lambda: int(os.getenv("BLOB_BROKER_TOKEN_TTL_SECONDS", "60"))
@@ -79,7 +79,7 @@ class Settings(BaseModel):
         default_factory=lambda: os.getenv("MONGODB_URL")
     )
     mongodb_database: str = Field(
-        default_factory=lambda: os.getenv("MONGODB_DATABASE", "talentra_docs")
+        default_factory=lambda: os.getenv("MONGODB_DATABASE", "veltara_docs")
     )
 
     # Object Storage (Vercel Blob / Local / S3)
@@ -96,7 +96,7 @@ class Settings(BaseModel):
         default_factory=lambda: os.getenv("S3_REGION", "us-east-1")
     )
     s3_bucket: str = Field(
-        default_factory=lambda: os.getenv("S3_BUCKET", "talentra-evidence")
+        default_factory=lambda: os.getenv("S3_BUCKET", "veltara-evidence")
     )
     s3_access_key_id: str = Field(
         default_factory=lambda: os.getenv("S3_ACCESS_KEY_ID", "minioadmin")
@@ -125,7 +125,7 @@ class Settings(BaseModel):
         )
     )
     cv_verification_token_pepper: str = Field(
-        default_factory=lambda: os.getenv("CV_VERIFICATION_TOKEN_PEPPER", "talentra-cv-token-pepper-v1")
+        default_factory=lambda: os.getenv("CV_VERIFICATION_TOKEN_PEPPER", "veltara-cv-token-pepper-v1")
     )
     cv_verification_ttl_days: int | None = Field(
         default_factory=lambda: int(os.getenv("CV_VERIFICATION_TTL_DAYS", "365")) if os.getenv("CV_VERIFICATION_TTL_DAYS") else 365
@@ -152,7 +152,7 @@ class Settings(BaseModel):
                 "secret123",
                 "development-secret",
                 "changeme",
-                "talentra-dev-secret-key-32-bytes-minimum-length-req",
+                "veltara-dev-secret-key-32-bytes-minimum-length-req",
             )
             if not self.jwt_secret_key or self.jwt_secret_key in insecure_keys or len(self.jwt_secret_key) < 32:
                 raise RuntimeError("CRITICAL: Production cannot use default, empty, or short JWT_SECRET_KEY!")
@@ -172,7 +172,7 @@ class Settings(BaseModel):
                 if not (has_token or has_oidc):
                     raise RuntimeError("CRITICAL: Production with OBJECT_STORAGE_PROVIDER=vercel_blob requires Vercel Blob OIDC or BLOB_READ_WRITE_TOKEN!")
                 insecure_broker_secrets = (
-                    "talentra-blob-broker-dev-secret-32-bytes-min",
+                    "veltara-blob-broker-dev-secret-32-bytes-min",
                     "secret123",
                     "development-secret",
                     "changeme",
@@ -187,9 +187,9 @@ class Settings(BaseModel):
             if self.object_storage_provider == "s3":
                 if self.s3_access_key_id in ("minioadmin", "admin") or self.s3_secret_access_key in ("minioadmin", "admin"):
                     raise RuntimeError("CRITICAL: Production cannot use default S3 credentials!")
-            if not self.identifier_lookup_pepper or self.identifier_lookup_pepper == "talentra-identifier-lookup-pepper-v1":
+            if not self.identifier_lookup_pepper or self.identifier_lookup_pepper == "veltara-identifier-lookup-pepper-v1":
                 raise RuntimeError("CRITICAL: Production must supply a unique, non-default IDENTIFIER_LOOKUP_PEPPER!")
-            if not self.cv_verification_token_pepper or self.cv_verification_token_pepper == "talentra-cv-token-pepper-v1":
+            if not self.cv_verification_token_pepper or self.cv_verification_token_pepper == "veltara-cv-token-pepper-v1":
                 raise RuntimeError("CRITICAL: Production must supply a unique, non-default CV_VERIFICATION_TOKEN_PEPPER!")
             if not self.public_app_url or "localhost" in self.public_app_url:
                 raise RuntimeError("CRITICAL: Production requires a valid non-localhost PUBLIC_APP_URL!")

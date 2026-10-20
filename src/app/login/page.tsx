@@ -96,11 +96,11 @@ export default function LoginPage() {
           <div className="relative z-10">
             <div className="flex items-center gap-3">
               <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-[#6D28D9] via-[#8B5CF6] to-[#A855F7] flex items-center justify-center font-black text-white text-lg shadow-lg">
-                T
-                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[#C084FC] ring-2 ring-[#2E1065]" />
+                V
+                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[#38BDF8] ring-2 ring-[#2E1065]" />
               </div>
               <span className="font-extrabold text-2xl tracking-tight text-white">
-                TALENTRA<span className="text-[#C084FC]">.ID</span>
+                VELTARA<span className="text-[#C084FC]">.ID</span>
               </span>
             </div>
 
@@ -260,7 +260,7 @@ export default function LoginPage() {
                   </>
                 ) : (
                   <>
-                    <span>Masuk ke TALENTRA</span>
+                    <span>Masuk ke VELTARA.ID</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
@@ -454,7 +454,7 @@ export default function LoginPage() {
               <div>
                 <h3 className="text-xl font-extrabold text-[#261331]">End-to-End User Flow</h3>
                 <p className="text-xs text-[#6F607D] mt-0.5">
-                  Alur inti TALENTRA.ID dari login sampai verifikasi publik.
+                  Alur inti VELTARA.ID dari login sampai verifikasi publik.
                 </p>
               </div>
               <button

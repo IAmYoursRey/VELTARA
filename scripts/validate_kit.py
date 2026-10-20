@@ -7,10 +7,10 @@ warnings = []
 
 required = [
     "GEMINI.md",
-    "TALENTRA/BLUEPRINT.md",
-    "TALENTRA/PHASES.md",
-    "TALENTRA/state/phase-state.json",
-    ".agents/agents/talentra-orchestrator/agent.md",
+    "VELTARA/BLUEPRINT.md",
+    "VELTARA/PHASES.md",
+    "VELTARA/state/phase-state.json",
+    ".agents/agents/veltara-orchestrator/agent.md",
 ]
 for rel in required:
     if not (ROOT / rel).exists():
@@ -45,8 +45,8 @@ for p in (ROOT / ".agents" / "rules").glob("*.md"):
     if len(p.read_text(encoding="utf-8")) > 12000:
         warnings.append(f"large rule file: {p.relative_to(ROOT)}")
 
-state = ROOT / "TALENTRA/state/phase-state.json"
-phases_file = ROOT / "TALENTRA/PHASES.md"
+state = ROOT / "VELTARA/state/phase-state.json"
+phases_file = ROOT / "VELTARA/PHASES.md"
 defined_phases = []
 if phases_file.exists():
     defined_phases = [int(m) for m in re.findall(r"^## Phase (\d+)", phases_file.read_text(encoding="utf-8"), re.MULTILINE)]

@@ -33,8 +33,8 @@ async function verifySessionToken(token: string): Promise<JwtPayload | null> {
         school_id: 'sch_demo_001',
         role: demoRole,
         exp: Math.floor(Date.now() / 1000) + 86400 * 7,
-        iss: 'talentra.id',
-        aud: 'talentra.id',
+        iss: 'veltara.id',
+        aud: 'veltara.id',
       };
     }
   }
@@ -45,7 +45,7 @@ async function verifySessionToken(token: string): Promise<JwtPayload | null> {
     const [headerB64, payloadB64, signatureB64] = parts;
 
     const secret =
-      process.env.JWT_SECRET_KEY || 'talentra-dev-secret-key-32-bytes-minimum-length-req';
+      process.env.JWT_SECRET_KEY || 'veltara-dev-secret-key-32-bytes-minimum-length-req';
 
     // Verify HMAC-SHA256 signature
     const key = await crypto.subtle.importKey(
@@ -93,7 +93,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // 2. Read session cookie
-  const sessionCookie = request.cookies.get('talentra_session');
+  const sessionCookie = request.cookies.get('veltara_session') || request.cookies.get('talentra_session');
   const session = sessionCookie ? await verifySessionToken(sessionCookie.value) : null;
 
   // 3. Handle Root path `/`
